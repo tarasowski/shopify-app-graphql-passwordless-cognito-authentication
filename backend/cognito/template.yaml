@@ -1,0 +1,103 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Cognito User Pool for Shopify Authorization Service
+
+Parameters:
+    ReplyEmail:
+        Type: String
+        Default: 'dimitri@tarasowki.de'
+
+Globals:
+    Function:
+        Runtime: nodejs8.10
+        Timeout: 5
+        MemorySize: 128
+
+Resources:
+    DefineShopifyAuthChallenge:
+        Type: 'AWS::Serverless::Function'
+        Properties:
+            Description: Defines the challenge
+            Handler: /src/define-auth-challenge.handler
+    CreateShopifyAuthChallenge:
+        Type: 'AWS::Serverless::Function'
+        Properties:
+            Description: Creates the challenge
+            Handler: /src/create-auth-challenge.handler
+    VerifyShopifyAuthChallenge:
+        Type: 'AWS::Serverless::Function'
+        Properties:
+            Description: Verifies the challenge
+            Handler: /src/verify-auth-challenge.handler
+            Environment:
+                Variables:
+                    JWT_SECRET: JgVWQQH4vb8CA8gryeEBpHIU2M5HqKyN
+    
+    ShopifyUserPool:
+        Type: 'AWS::Cognito::UserPool'
+        Properties:
+            UserPoolName: ShopifyUserPool
+            EmailConfiguration:
+                ReplyToEmailAddress: !Ref ReplyEmail
+            Policies:
+                PasswordPolicy:
+                    MinimumLength: 8
+                    RequireLowercase: true
+                    RequireNumbers: true
+                    RequireSymbols: true
+                    RequireUppercase: true
+            Schema:
+                -   AttributeDataType: String
+                    Mutable: true
+                    Name: access_token
+                -   AttributeDataType: String
+                    Mutable: true
+                    Name: internal_domain
+                -   AttributeDataType: String
+                    Name: shop_id
+            UsernameAttributes: 
+                -   email
+            LambdaConfig:
+                CreateAuthChallenge: !GetAtt CreateShopifyAuthChallenge.Arn
+                DefineAuthChallenge: !GetAtt DefineShopifyAuthChallenge.Arn
+                VerifyAuthChallengeResponse: !GetAtt VerifyShopifyAuthChallenge.Arn
+    
+    ShopifyCustomLoginClient:
+        Type: 'AWS::Cognito::UserPoolClient'
+        Properties:
+            ClientName: 'oauth-client'
+            GenerateSecret: false
+            ExplicitAuthFlows:
+                -   CUSTOM_AUTH_FLOW_ONLY
+            RefreshTokenValidity: 30
+            UserPoolId: !Ref ShopifyUserPool
+    
+    DefineShopifyAuthChallengePermission:
+        Type: AWS::Lambda::Permission
+        Properties:
+            Action: lambda:InvokeFunction
+            FunctionName: !GetAtt DefineShopifyAuthChallenge.Arn
+            Principal: cognito-idp.amazonaws.com
+            SourceArn: !GetAtt ShopifyUserPool.Arn
+    CreateShopifyAuthChallengePermission:
+        Type: AWS::Lambda::Permission
+        Properties:
+            Action: lambda:InvokeFunction
+            FunctionName: !GetAtt CreateShopifyAuthChallenge.Arn
+            Principal: cognito-idp.amazonaws.com
+            SourceArn: !GetAtt ShopifyUserPool.Arn
+    VerifyShopifyAuthChallengePermission:
+        Type: AWS::Lambda::Permission
+        Properties:
+            Action: lambda:InvokeFunction
+            FunctionName: !GetAtt VerifyShopifyAuthChallenge.Arn
+            Principal: cognito-idp.amazonaws.com
+            SourceArn: !GetAtt ShopifyUserPool.Arn
+        
+        
+Outputs:
+    ShopifyCognitoUserPool:
+        Description: User pool that handles authorization of the app
+        Value: !Ref ShopifyUserPool
+        Export:
+            Name: !Sub ${AWS::StackName}-CognitUserPoolExport

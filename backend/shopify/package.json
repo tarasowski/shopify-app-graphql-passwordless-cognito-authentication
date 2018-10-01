@@ -1,0 +1,26 @@
+{
+  "name": "shopify-auth-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./node_modules/.bin/tape ./test/*.test.js",
+    "test-coverage": "nyc node ./node_modules/.bin/tape ./test/*.test.js",
+    "lint": "eslint ./",
+    "precommit": "npm run lint && npm test",
+    "prepush": "echo There should be additional layer of checks",
+    "folder": "rm -rf build && mkdir build",
+    "bucket": "aws s3api create-bucket --bucket shopify-auth-service --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1",
+    "package": "aws cloudformation package --template-file template.yaml --output-template-file build/output.yaml --s3-bucket shopify-auth-service",
+    "deploy": "aws cloudformation deploy --template-file build/output.yaml --stack-name shopify-auth-service-shopify --capabilities CAPABILITY_NAMED_IAM",
+    "qd": "npm run folder && npm run package && npm run deploy",
+    "scotty": "aws s3 cp <local-path> s3://<bucket-name>"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^8.3.0",
+    "node-fetch": "^2.2.0"
+  }
+}

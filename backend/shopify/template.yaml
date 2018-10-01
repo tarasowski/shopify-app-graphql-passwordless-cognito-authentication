@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: OAuth2 Backend Shopify Authorization Service
+
+Parameters:
+  UserPoolIdFromParentStack:
+        Type: String
+        Default: shopify-auth-service-cognito-CognitUserPoolExport
+
+Globals:
+    Function:
+        Runtime: nodejs8.10
+        Timeout: 5
+        MemorySize: 128
+    Api:
+        Cors:
+            AllowMethods: "'*'"
+            AllowHeaders: "'*'"
+            AllowOrigin: "'*'"
+
+Resources:
+  ShopifyServiceAuthBegin:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: 'Authorization Begining Function'
+      Handler: /src/auth-begin.handler
+      Environment:
+            Variables:
+                SHOPIFY_API_KEY: 4b875f83898f6b2a5856b8ccb940b48b
+                SHOPIFY_SCOPE: 'read_orders:write_orders'
+                JWT_SECRET: JgVWQQH4vb8CA8gryeEBpHIU2M5HqKyN
+      Events:
+        ShopifyAuthService:
+          Type: Api
+          Properties:
+            Path: /auth
+            Method: GET
+  ShopifyServiceAuthComplete:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: 'Authorization Complete Function'
+      Handler: /src/auth-complete.handler
+      Environment:
+        Variables:
+          JWT_SECRET: JgVWQQH4vb8CA8gryeEBpHIU2M5HqKyN
+          SHOPIFY_API_KEY: 4b875f83898f6b2a5856b8ccb940b48b
+          SHOPIFY_API_SECRET: d7367ce25b3472a7e4feb94674af0c5f
+          USER_POOL_ID: 
+              Fn::ImportValue:
+                            !Ref UserPoolIdFromParentStack
+          SHOPS_TABLE: !Ref ShopifyShopsTable
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:GetItem'
+                - 'dynamodb:PutItem'
+                - 'dynamodb:Query'
+                - 'dynamodb:Scan'
+                - 'dynamodb:UpdateItem'
+              Resource: !GetAtt ShopifyShopsTable.Arn
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'cognito-idp:AdminCreateUser'
+                - 'cognito-idp:AdminDeleteUser'
+                - 'cognito-idp:AdminGetUser'
+              Resource: '*'
+      Events:
+        ShopifyAuthService:
+          Type: Api
+          Properties:
+            Path: /callback
+            Method: POST
+  
+  ShopifyShopsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: id
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

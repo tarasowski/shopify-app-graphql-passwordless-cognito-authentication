@@ -1,0 +1,122 @@
+{
+    "resource": "/callback",
+    "path": "/callback",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,de;q=0.7",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "ME",
+        "content-type": "application/json;charset=UTF-8",
+        "Host": "0h1v8w3ywj.execute-api.eu-west-1.amazonaws.com",
+        "origin": "http://localhost:8080",
+        "Referer": "http://localhost:8080/?code=1e543c8937a05657d1b44ef85b51250d&hmac=36983419aa9d885e92f2566d8587f8c28675de27e4a2170019cd9a9e78a135da&shop=southwestdev.myshopify.com&state=mqLiTsQFeYeQTCD4UWdjo3lOItlH1EiM&timestamp=1536762559",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+        "Via": "2.0 a75b67932d84d80b40e12159613deb17.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "oL5MY28nUhbMnpcwX4ft7mXsBipG74guNjMkPwPuy-CTXNqUU16IWQ==",
+        "X-Amzn-Trace-Id": "Root=1-5b992464-a9fa6014a54f4a398aa260e4",
+        "X-Forwarded-For": "37.221.176.67, 70.132.4.135",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "application/json, text/plain, */*"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate, br"
+        ],
+        "Accept-Language": [
+            "en-GB,en-US;q=0.9,en;q=0.8,de;q=0.7"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-Country": [
+            "ME"
+        ],
+        "content-type": [
+            "application/json;charset=UTF-8"
+        ],
+        "Host": [
+            "0h1v8w3ywj.execute-api.eu-west-1.amazonaws.com"
+        ],
+        "origin": [
+            "http://localhost:8080"
+        ],
+        "Referer": [
+            "http://localhost:8080/?code=1e543c8937a05657d1b44ef85b51250d&hmac=36983419aa9d885e92f2566d8587f8c28675de27e4a2170019cd9a9e78a135da&shop=southwestdev.myshopify.com&state=mqLiTsQFeYeQTCD4UWdjo3lOItlH1EiM&timestamp=1536762559"
+        ],
+        "User-Agent": [
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+        ],
+        "Via": [
+            "2.0 a75b67932d84d80b40e12159613deb17.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "oL5MY28nUhbMnpcwX4ft7mXsBipG74guNjMkPwPuy-CTXNqUU16IWQ=="
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-5b992464-a9fa6014a54f4a398aa260e4"
+        ],
+        "X-Forwarded-For": [
+            "37.221.176.67, 70.132.4.135"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ]
+    },
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "mpdw3f",
+        "resourcePath": "/callback",
+        "httpMethod": "POST",
+        "extendedRequestId": "NHKftH6AjoEF-Qw=",
+        "requestTime": "12/Sep/2018:14:36:20 +0000",
+        "path": "/Prod/callback",
+        "accountId": "012276481874",
+        "protocol": "HTTP/1.1",
+        "stage": "Prod",
+        "requestTimeEpoch": 1536762980535,
+        "requestId": "3717ad1b-b699-11e8-a521-79d10064f145",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "37.221.176.67",
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+            "user": null
+        },
+        "apiId": "0h1v8w3ywj"
+    },
+    "body": "{\"params\":{\"code\":\"1e543c8937a05657d1b44ef85b51250d\",\"hmac\":\"36983419aa9d885e92f2566d8587f8c28675de27e4a2170019cd9a9e78a135da\",\"shop\":\"southwestdev.myshopify.com\",\"state\":\"mqLiTsQFeYeQTCD4UWdjo3lOItlH1EiM\",\"timestamp\":\"1536762559\"},\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzczNjI1NTIsImlhdCI6MTUzNjc2MjU1MiwiaXNzIjoidGFyYXNvd3NraSIsImp0aSI6Im1xTGlUc1FGZVllUVRDRDRVV2RqbzNsT0l0bEgxRWlNIiwic3ViIjoic291dGh3ZXN0ZGV2Lm15c2hvcGlmeS5jb20ifQ.HrsdfIQLJ5t3U1WnZoz8C-1LywoQsdYH8sPd91uLaSs\"}",
+    "isBase64Encoded": false
+}

@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: AppSync GraphQL for Shopify Authorization Service
+
+
+Parameters:
+    AWSRegion:
+        Type: String
+        Default: eu-west-1
+    GraphQLBucketName:
+        Type: String
+        Default: shopify-app-graphql-bucket
+    UserPoolIdFromParentStack:
+        Type: String
+        Default: shopify-auth-service-cognito-CognitUserPoolExport
+
+Globals:
+    Function:
+        Runtime: nodejs8.10
+        Timeout: 5
+        MemorySize: 128
+
+
+Resources:
+    SimpleGetDataFunction:
+            Type: 'AWS::Serverless::Function'
+            Properties:
+                Description: Simple get data function to test the api
+                Handler: /src/get-data.handler
+    
+    AppSyncInvokeLambdaFunction:
+        Type: AWS::IAM::ManagedPolicy
+        Properties:
+            Description: Managed policy to allow AppSync to invoke Lambda functions
+            Path: /appsync/
+            PolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    -   Effect: Allow
+                        Action:
+                            -   lambda:InvokeFunction
+                        Resource:
+                            -   !GetAtt SimpleGetDataFunction.Arn
+    
+    AppSyncLambdaRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: appsync-invoke-lambda-shopify-app
+            ManagedPolicyArns:
+                -   !Ref AppSyncInvokeLambdaFunction
+            AssumeRolePolicyDocument:
+                Version: 2012-10-17
+                Statement:
+                    -   Effect: Allow
+                        Action:
+                            -   sts:AssumeRole
+                        Principal:
+                            Service:
+                                -   appsync.amazonaws.com
+        DependsOn:
+            -   AppSyncInvokeLambdaFunction
+            
+    ShopifyServiceAPI:
+        Type: AWS::AppSync::GraphQLApi
+        Description: The GraphQL API for the Shopify App
+        Properties:
+            AuthenticationType: AMAZON_COGNITO_USER_POOLS
+            Name: ShopifyAppAPI
+            UserPoolConfig:
+                UserPoolId: 
+                    Fn::ImportValue:
+                            !Ref UserPoolIdFromParentStack
+                AwsRegion: !Ref AWSRegion
+                DefaultAction: ALLOW
+    ShopifyAppGraphQLSchema:
+        Type: AWS::AppSync::GraphQLSchema
+        Properties:
+            ApiId: !GetAtt ShopifyServiceAPI.ApiId
+            DefinitionS3Location: !Join ['',['s3://', !Ref GraphQLBucketName, '/schema.graphql'] ]
+    SimpleGetDataSource:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !GetAtt ShopifyServiceAPI.ApiId
+            Name: simpleshopifygetsource
+            Description: Simple datasource to get response back
+            Type: AWS_LAMBDA
+            ServiceRoleArn: !GetAtt AppSyncLambdaRole.Arn
+            LambdaConfig:
+                LambdaFunctionArn: !GetAtt SimpleGetDataFunction.Arn
+    SimpleGetDataResolver:
+        Type: AWS::AppSync::Resolver
+        DependsOn: ShopifyAppGraphQLSchema
+        Properties:
+            ApiId: !GetAtt ShopifyServiceAPI.ApiId
+            TypeName: Query
+            DataSourceName: !GetAtt SimpleGetDataSource.Name
+            FieldName: get
+            RequestMappingTemplateS3Location: !Join ['',['s3://', !Ref GraphQLBucketName, '/lambda/request.txt'] ] 
+            ResponseMappingTemplateS3Location: !Join ['',['s3://', !Ref GraphQLBucketName, '/lambda/response.txt'] ]

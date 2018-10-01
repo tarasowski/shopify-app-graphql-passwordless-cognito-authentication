@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@shopify/polaris": "^2.10.0",
+    "aws-amplify": "^1.1.3",
+    "aws-appsync": "^1.3.4",
+    "axios": "^0.18.0",
+    "graphql-tag": "^2.9.2",
+    "react": "^16.5.2",
+    "react-apollo": "^2.2.1",
+    "react-dom": "^16.5.2",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.5"
+  },
+  "homepage": "http://shopify-app-hosting.s3-website.eu-central-1.amazonaws.com/",
+  "scripts": {
+    "start": "REACT_APP_STAGE=dev react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync build/ s3://shopify-warehouse-app"
+  }
+}

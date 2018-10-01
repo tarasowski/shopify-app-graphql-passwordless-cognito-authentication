@@ -1,0 +1,7 @@
+﻿type Query {
+  get: String
+}
+
+type schema {
+  query: Query
+}

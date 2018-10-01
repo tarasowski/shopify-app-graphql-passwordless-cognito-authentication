@@ -1,0 +1,128 @@
+{
+    "resource": "/auth",
+    "path": "/auth",
+    "httpMethod": "GET",
+    "headers": {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,de;q=0.7",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "ME",
+        "Host": "0h1v8w3ywj.execute-api.eu-west-1.amazonaws.com",
+        "Referer": "https://s3-eu-west-1.amazonaws.com/shopify-login/index.html",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+        "Via": "2.0 a64c0f035a95f6bb75cdc3620ebb49b0.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "AzjUaWXddfH-noWcMkyWDgQO6gdHTwdpnPQ-5NMMSQGi6XQ43QN4hA==",
+        "X-Amzn-Trace-Id": "Root=1-5b98c4f2-fbed92bed817f69f995e79ff",
+        "X-Forwarded-For": "37.221.176.67, 52.46.11.19",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate, br"
+        ],
+        "Accept-Language": [
+            "en-GB,en-US;q=0.9,en;q=0.8,de;q=0.7"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-Country": [
+            "ME"
+        ],
+        "Host": [
+            "0h1v8w3ywj.execute-api.eu-west-1.amazonaws.com"
+        ],
+        "Referer": [
+            "https://s3-eu-west-1.amazonaws.com/shopify-login/index.html"
+        ],
+        "upgrade-insecure-requests": [
+            "1"
+        ],
+        "User-Agent": [
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+        ],
+        "Via": [
+            "2.0 a64c0f035a95f6bb75cdc3620ebb49b0.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "AzjUaWXddfH-noWcMkyWDgQO6gdHTwdpnPQ-5NMMSQGi6XQ43QN4hA=="
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-5b98c4f2-fbed92bed817f69f995e79ff"
+        ],
+        "X-Forwarded-For": [
+            "37.221.176.67, 52.46.11.19"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ]
+    },
+    "queryStringParameters": {
+        "callback-url": "https://mjai5qs0jc.execute-api.eu-west-1.amazonaws.com/dev/redirect",
+        "shop": "hello"
+    },
+    "multiValueQueryStringParameters": {
+        "callback-url": [
+            "https://mjai5qs0jc.execute-api.eu-west-1.amazonaws.com/dev/redirect"
+        ],
+        "shop": [
+            ""
+        ]
+    },
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "nrcrpi",
+        "resourcePath": "/auth",
+        "httpMethod": "GET",
+        "extendedRequestId": "NGO18GAOjoEF4lw=",
+        "requestTime": "12/Sep/2018:07:49:06 +0000",
+        "path": "/Prod/auth",
+        "accountId": "012276481874",
+        "protocol": "HTTP/1.1",
+        "stage": "Prod",
+        "requestTimeEpoch": 1536738546857,
+        "requestId": "537c4a5b-b660-11e8-aaa3-4745b0b971eb",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "37.221.176.67",
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+            "user": null
+        },
+        "apiId": "0h1v8w3ywj"
+    },
+    "body": null,
+    "isBase64Encoded": false
+}
