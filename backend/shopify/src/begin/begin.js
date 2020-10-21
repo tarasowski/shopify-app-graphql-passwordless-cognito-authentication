@@ -4,6 +4,7 @@ const { createJWT } = require('./lib/jwt')
 const querystring = require('querystring')
 
 exports.handler = async (event) => {
+  console.log(JSON.stringify(event))
     try {
         const shopifyApiKey = process.env.SHOPIFY_API_KEY
         const shopifyScope = process.env.SHOPIFY_SCOPE

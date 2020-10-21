@@ -1,82 +1,93 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Shopify authorization service
-Globals:
-  Api:
-    Cors:
-      AllowHeaders: '''*'''
-      AllowMethods: '''*'''
-      AllowOrigin: '''*'''
-  Function:
-    MemorySize: 128
-    Runtime: nodejs8.10
-    Timeout: 5
+Transform: AWS::Serverless-2016-10-31
+Description: OAuth2 Backend Shopify Authorization Service
 Parameters:
   UserPoolIdFromParentStack:
-    Default: shopify-auth-service-cognito-CognitUserPoolExport
     Type: String
+    Default: shopify-auth-service-cognito-CognitUserPoolExport
+  APIKEY:
+    Type: String
+    Default: 1d777b6c9d74d764928be1e5c1caead2
+  APISECRET:
+    Type: String
+    Default: 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
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 5
+    MemorySize: 128
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
 Resources:
   ShopifyServiceAuthBegin:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://shopify-auth-service/629c8c2fb914d9b589e55184cb43fbb0
       Description: Authorization Begining Function
+      Handler: begin.handler
+      CodeUri: s3://shopify.datastack.de/7c2e4c8e11935d0274900ff6485df540
       Environment:
         Variables:
-          JWT_SECRET: JgVWQQH4vb8CA8gryeEBpHIU2M5HqKyN
-          SHOPIFY_API_KEY: 4b875f83898f6b2a5856b8ccb940b48b
+          SHOPIFY_API_KEY:
+            Ref: APIKEY
           SHOPIFY_SCOPE: read_orders:write_orders
+          JWT_SECRET: JgVWQQH4vb8CA8gryeEBpHIU2M5HqKyN
       Events:
         ShopifyAuthService:
-          Properties:
-            Method: GET
-            Path: /auth
           Type: Api
-      Handler: /src/auth-begin.handler
-    Type: AWS::Serverless::Function
+          Properties:
+            Path: /auth
+            Method: GET
   ShopifyServiceAuthComplete:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://shopify-auth-service/629c8c2fb914d9b589e55184cb43fbb0
       Description: Authorization Complete Function
+      Handler: complete.handler
+      CodeUri: s3://shopify.datastack.de/ebb6a7b2ec6745d8dbe8ae795c2c85f2
       Environment:
         Variables:
           JWT_SECRET: JgVWQQH4vb8CA8gryeEBpHIU2M5HqKyN
-          SHOPIFY_API_KEY: 4b875f83898f6b2a5856b8ccb940b48b
-          SHOPIFY_API_SECRET: d7367ce25b3472a7e4feb94674af0c5f
-          SHOPS_TABLE:
-            Ref: ShopifyShopsTable
+          SHOPIFY_API_KEY:
+            Ref: APIKEY
+          SHOPIFY_API_SECRET:
+            Ref: APISECRET
           USER_POOL_ID:
             Fn::ImportValue:
               Ref: UserPoolIdFromParentStack
-      Events:
-        ShopifyAuthService:
-          Properties:
-            Method: POST
-            Path: /callback
-          Type: Api
-      Handler: /src/auth-complete.handler
+          SHOPS_TABLE:
+            Ref: ShopifyShopsTable
       Policies:
-      - Statement:
-        - Action:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
           - dynamodb:GetItem
           - dynamodb:PutItem
           - dynamodb:Query
           - dynamodb:Scan
           - dynamodb:UpdateItem
-          Effect: Allow
           Resource:
             Fn::GetAtt:
             - ShopifyShopsTable
             - Arn
-        Version: '2012-10-17'
-      - Statement:
-        - Action:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
           - cognito-idp:AdminCreateUser
           - cognito-idp:AdminDeleteUser
           - cognito-idp:AdminGetUser
-          Effect: Allow
           Resource: '*'
-        Version: '2012-10-17'
-    Type: AWS::Serverless::Function
+      Events:
+        ShopifyAuthService:
+          Type: Api
+          Properties:
+            Path: /callback
+            Method: POST
   ShopifyShopsTable:
+    Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
       - AttributeName: id
@@ -87,5 +98,3 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-    Type: AWS::DynamoDB::Table
-Transform: AWS::Serverless-2016-10-31
